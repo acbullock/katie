@@ -1,6 +1,6 @@
 <template>
   <q-page class='window-height window-width row justify-center items-center'>
-    <q-card>
+    <q-card style="width:80vw;min-width:400px;max-width:1200px">
       <q-card-section>
         <div class='text-h6'>Bought an Item?</div>
         <q-separator />
@@ -19,7 +19,7 @@
                 Date Listed
                 <br />
               </div>
-              <q-date landscape v-model='date_listed' />
+              <q-date v-model='date_listed' />
               <q-input label='Asking Price' v-model='asking_price' />
             </q-step>
 
