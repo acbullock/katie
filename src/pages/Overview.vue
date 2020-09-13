@@ -1,10 +1,9 @@
 <template>
   <q-page class='window-height window-width row justify-center items-center'>
-    <q-card style='width:80vwmax-width:1200px' flat bordered>
+    <q-card style='width:80vw;max-width:1200px' flat bordered>
       <q-card-section style='background-color:#093A3E'>
         <q-table color='primary' title='Summary' :columns='summary_columns' :data='[]' />
       </q-card-section>
-
       <q-card-section style='background-color: #3AAFB9'>
         <q-table color='primary' :title='title' :columns='columns' :data='data' />
         <div class='text'>
