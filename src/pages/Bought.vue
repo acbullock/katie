@@ -20,7 +20,7 @@
                 <br />
               </div>
               <q-date v-model='date_listed' />
-              <q-input label='Asking Price' v-model='asking_price' />
+              <q-input label='Asking Price' type='number' v-model='asking_price' />
             </q-step>
 
             <q-step :name='2' title='Review' icon='create_new_folder' :done='step > 2'>
