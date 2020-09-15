@@ -105,12 +105,13 @@ export default {
           format: val => `$${val}`
         },
         {
-          name: 'sold_date',
+          name: 'date_sold',
           label: 'Sold Date',
-          field: 'sold_date',
+          field: 'date_sold',
           required: true,
           sortable: true,
-          style: 'width: 500px'
+          style: 'width: 500px',
+          format: (val) => `${!val ? '' : new Date(val).toLocaleDateString()}`
         },
         {
           name: 'sold_price',

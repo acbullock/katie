@@ -21,16 +21,42 @@
               <q-input label='E or P Fee' v-model='ep_fee' type='number' />
               <q-input label='Paypal Fee' v-model='paypal_fee' type='number' />
               <q-input label='Shipping Cost' v-model='shipping_cost' type='number' />
-              <q-input label='Platform Sold On' v-model='shipping_cost' />
+              <q-input label='Platform Sold On' v-model='platform' />
             </q-step>
 
-            <q-step :name='2' title='Review' icon='create_new_folder' :done='step > 2'>step 2</q-step>
+            <q-step :name='2' title='Review' icon='create_new_folder' :done='step > 2'>
+              <div
+                :style="!item?'color:#C10015':'color:#001011'"
+              >Item: {{item ? item.item: 'SELECT AN ITEM'}}</div>
+              <div
+                :style="!date_sold?'color:#C10015':'color:#001011'"
+              >Date Sold: {{date_sold|| 'SELECT A SOLD DATE'}}</div>
+              <div
+                :style="!sold_price?'color:#C10015':'color:#001011'"
+              >Sold Price: ${{sold_price|| 'ENTER SOLD PRICE'}}</div>
+              <div
+                :style="!shipping_price?'color:#C10015':'color:#001011'"
+              >Shipping Price: ${{shipping_price|| 'ENTER SHIPPING PRICE'}}</div>
+              <div
+                :style="!ep_fee?'color:#C10015':'color:#001011'"
+              >E or P Fee: ${{ep_fee|| 'ENTER E/P FEE'}}</div>
+              <div
+                :style="!paypal_fee?'color:#C10015':'color:#001011'"
+              >Paypal Fee: ${{paypal_fee|| 'ENTER PAYPAL FEE'}}</div>
+              <div
+                :style="!shipping_cost?'color:#C10015':'color:#001011'"
+              >Shipping Cost: ${{shipping_cost|| 'ENTER SHIPPING COST'}}</div>
+              <div
+                :style="!platform?'color:#C10015':'color:#001011'"
+              >Platform Sold On: {{platform|| 'ENTER PLATFORM SOLD ON'}}</div>
+            </q-step>
             <template v-slot:navigation>
               <q-stepper-navigation>
                 <q-btn
                   @click='step !== 2 ? $refs.stepper.next(): onFinish()'
                   color='primary'
                   :label="step === 2 ? 'Finish' : 'Continue'"
+                  :disable='step===2 && (!item || !date_sold || !sold_price || !shipping_price || !ep_fee || !paypal_fee || !shipping_cost || !platform)'
                 />
                 <q-btn
                   v-if='step > 1'
@@ -62,10 +88,40 @@ export default {
       shipping_price: '',
       ep_fee: '',
       paypal_fee: '',
-      shipping_cost: ''
+      shipping_cost: '',
+      platform: ''
     }
   },
   methods: {
+    async onFinish () {
+      await this.$axios.post(
+        'https://guarded-castle-33109.herokuapp.com/findOneAndUpdate',
+        {
+          collection: 'items',
+          query: {
+            _id: this.item.value
+          },
+          update: {
+            date_sold: new Date(this.date_sold).toISOString(),
+            sold_price: parseFloat(this.sold_price),
+            shipping_price: parseFloat(this.shipping_price),
+            ep_fee: parseFloat(this.ep_fee),
+            paypal_fee: parseFloat(this.paypal_fee),
+            shipping_cost: parseFloat(this.shipping_cost),
+            platform: this.platform
+          }
+        }
+      )
+      this.step = 1
+      this.item = null
+      this.date_sold = null
+      this.sold_price = ''
+      this.shipping_price = ''
+      this.ep_fee = ''
+      this.paypal_fee = ''
+      this.shipping_cost = ''
+      this.platform = ''
+    },
     optionsFn (date) {
       if (!this.item || !this.item.date_listed) return false
       if (new Date(date).getTime() > new Date().getTime()) return false
