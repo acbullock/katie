@@ -121,6 +121,7 @@ export default {
       this.paypal_fee = ''
       this.shipping_cost = ''
       this.platform = ''
+      await this.getBoughtItems()
     },
     optionsFn (date) {
       if (!this.item || !this.item.date_listed) return false
@@ -133,7 +134,10 @@ export default {
       let items = await this.$axios.post(
         'https://guarded-castle-33109.herokuapp.com/find',
         {
-          collection: 'items'
+          collection: 'items',
+          query: {
+            date_sold: null
+          }
         }
       )
       items = items.data
